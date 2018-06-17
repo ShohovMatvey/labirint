@@ -21,8 +21,6 @@ import android.view.WindowManager
 import kotlinx.android.synthetic.main.dialog_main.view.*
 
 
-
-
 class GameActivity : AppCompatActivity() {
 
     lateinit var background: Canvass
