@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/menu"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textSize="10sp"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/top"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/left"
+        android:layout_toEndOf="@+id/left"
+        android:text="@string/top"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textSize="8sp" />
+
+    <Button
+        android:id="@+id/left"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/down"
+        android:text="@string/left"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/down"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/right"
+        android:text="@string/down"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/right"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/menu"
+        android:text="@string/restart"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textSize="10sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="100dp"
+        android:textSize="18sp" />
+</RelativeLayout>
