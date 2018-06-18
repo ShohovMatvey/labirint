@@ -13,4 +13,8 @@
     <string name="dial_text">Начать новую игру?</string>
     <string name="exit">выход</string>
     <string name="dial_text_exit">Выйти из игры?</string>
+    <string name="kol_game">Количество игр=</string>
+    <string name="min_time">Минимальное время=</string>
+    <string name="kol_win">Количество побед=</string>
+    <string name="sred_time">Среднее время=</string>
 </resources>
