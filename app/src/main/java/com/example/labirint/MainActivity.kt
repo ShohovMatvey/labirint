@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
-        //Здесь был я
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         var Xpoint : Int = ((0..19).random())*30 + 15
         var Ypoint : Int = ((0..16).random())*30 + 15
