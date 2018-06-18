@@ -16,8 +16,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var mas_klet: Array<Array<Int>> = Array(10, { Array(10, { 10000 }) })
-    var mas_sten: Array<Int> = Array(180, { 0 })
+    var Mas_klet: Array<Array<Int>> = Array(10, { Array(10, { 10000 }) })
+    var Mas_sten: Array<Int> = Array(180, { 0 })
     var k : Int = 0
     var n : Int = 0
     var generate_sten = 70
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         new_game.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
-            var kletka = 30
+            val kletka = 30
             Xpoint = ((0..19).random()) * kletka + kletka
             Ypoint = ((0..16).random()) * kletka + kletka
             Xpoint_start = Xpoint
@@ -92,6 +92,8 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Xpoint_old", (Xpoint_start).toString())
             intent.putExtra("Ypoint_old", (Ypoint_start).toString())
             intent.putExtra("Left_time", (Left_time).toString())
+            //intent.putExtra("Mas_klet", (Mas_klet).toString())
+            //intent.putExtra("Mas_sten", (Mas_sten).toString())
             finish()
             startActivity(intent)
         }
@@ -145,22 +147,23 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until generate_sten) {
             n = (0..180).random()
             if (n < 90) {
-                mas_klet[n / 9][n % 9] = mas_klet[n / 9][n % 9] / 1000 * 1000 + mas_klet[n / 9][n % 9] % 100 + 200
-                mas_klet[n / 9][n % 9 + 1] = mas_klet[n / 9][n % 9 + 1] / 10 * 10 + 4
+                Mas_klet[n / 9][n % 9] = Mas_klet[n / 9][n % 9] / 1000 * 1000 + Mas_klet[n / 9][n % 9] % 100 + 200
+                Mas_klet[n / 9][n % 9 + 1] = Mas_klet[n / 9][n % 9 + 1] / 10 * 10 + 4
+                Mas_sten[n] = 1
             } else {
                 n = n - 90
-                mas_klet[n % 9][n / 9] = mas_klet[n % 9][n / 9] / 100 * 100 + mas_klet[n % 9][n / 9] % 10 + 30
-                mas_klet[n % 9 + 1][n / 9] = mas_klet[n % 9 + 1][n / 9] / 10000 * 10000 + mas_klet[n % 9 + 1][n / 9] % 1000 + 1000
+                Mas_klet[n % 9][n / 9] = Mas_klet[n % 9][n / 9] / 100 * 100 + Mas_klet[n % 9][n / 9] % 10 + 30
+                Mas_klet[n % 9 + 1][n / 9] = Mas_klet[n % 9 + 1][n / 9] / 10000 * 10000 + Mas_klet[n % 9 + 1][n / 9] % 1000 + 1000
+                Mas_sten[n + 90] = 1
             }
-            mas_sten[n] = 1
         }
 
         for (i in 0 until 10) {
             for (j in 0 until 10) {
-                if (mas_klet[i][j] % 10 != 0) k = k + 1
-                if (mas_klet[i][j] % 100 - mas_klet[i][j] % 10 != 0) k = k + 1
-                if (mas_klet[i][j] % 1000 - mas_klet[i][j] % 100 != 0) k = k + 1
-                mas_klet[i][j] = 10000 * k + mas_klet[i][j] % 10000
+                if (Mas_klet[i][j] % 10 != 0) k = k + 1
+                if (Mas_klet[i][j] % 100 - Mas_klet[i][j] % 10 != 0) k = k + 1
+                if (Mas_klet[i][j] % 1000 - Mas_klet[i][j] % 100 != 0) k = k + 1
+                Mas_klet[i][j] = 10000 * k + Mas_klet[i][j] % 10000
                 k = 0
             }
         }

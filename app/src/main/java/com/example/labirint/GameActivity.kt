@@ -23,10 +23,27 @@ import kotlinx.android.synthetic.main.dialog_main.view.*
 
 class GameActivity : AppCompatActivity() {
 
+    val paint = Paint()
+    var Xpoint : Int = 0
+    var Ypoint : Int = 0
+    var Xpoint_start : Int = 0
+    var Ypoint_start : Int = 0
+    var Xpoint_old : Int = 0
+    var Ypoint_old : Int = 0
+    var LeftInMillis : Long = 0
+    var Left_time : Long = 0
+    var klet_width : Int = 19
+    var klet_height : Int = 16
+
     lateinit var background: Canvass
     var timer: TextView? = null
     var CountDownTimer: CountDownTimer? = null
     var Running: Boolean = false
+    var Mas_klet: Array<Array<Int>> = Array(klet_height, { Array(klet_width, { 10000 }) })
+    var Mas_sten: Array<Int> = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
+    var k : Int = 0
+    var n : Int = 0
+    var generate_sten = ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))/2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +67,15 @@ class GameActivity : AppCompatActivity() {
         val left_time = intent.getStringExtra("Left_time")
         if (left_time != null) Left_time = (left_time).toLong()
         LeftInMillis = Left_time
+
+        //val mas_klet = intent.getStringExtra("Mas_klet")
+        //for (i in 0 until 10) {
+            //for (j in 0 until 10) {
+                //if (mas_klet[i][j] != null) Mas_klet = (mas_klet[i][j]).toInt()
+            //}
+        //}
+
+
 
         startTimer()
 
@@ -93,6 +119,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint_start = Ypoint
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
+                generate()
                 background.invalidate()
             }
             dial_view.no.setOnClickListener{
@@ -102,61 +129,93 @@ class GameActivity : AppCompatActivity() {
         }
 
         top.setOnClickListener{
-            if (Ypoint >= kletka) {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Ypoint -= kletka
-            }
-            else {
+            if ((Ypoint < kletka)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 11000)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21004)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
                 Xpoint = Xpoint_start
                 Ypoint = Ypoint_start
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
+            }
+            else {
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                Ypoint -= kletka
             }
             background.invalidate()
         }
 
         down.setOnClickListener{
-            if (Ypoint <= max_w - kletka) {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Ypoint += kletka
-            }
-            else {
+            if ((Ypoint > max_w - kletka)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10030)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20034)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
                 Xpoint = Xpoint_start
                 Ypoint = Ypoint_start
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
+            }
+            else {
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                Ypoint += kletka
             }
             background.invalidate()
         }
 
         right.setOnClickListener{
-            if (Xpoint <= max_h - kletka) {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Xpoint += kletka
-            }
-            else {
+            if ((Xpoint > max_h - kletka)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10200)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20204)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
                 Xpoint = Xpoint_start
                 Ypoint = Ypoint_start
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
+            }
+            else {
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                Xpoint += kletka
             }
             background.invalidate()
         }
 
         left.setOnClickListener{
-            if (Xpoint >= kletka) {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Xpoint -= kletka
-            }
-            else {
+            if ((Xpoint < kletka)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10004)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21004)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20034)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20204)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034)||
+                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
                 Xpoint = Xpoint_start
                 Ypoint = Ypoint_start
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
+            }
+            else {
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                Xpoint -= kletka
             }
             background.invalidate()
         }
@@ -185,15 +244,6 @@ class GameActivity : AppCompatActivity() {
     fun ClosedRange<Int>.random() =
             Random().nextInt(endInclusive - start) + start
 
-    val paint = Paint()
-    var Xpoint : Int = 0
-    var Ypoint : Int = 0
-    var Xpoint_start : Int = 0
-    var Ypoint_start : Int = 0
-    var Xpoint_old : Int = 0
-    var Ypoint_old : Int = 0
-    var LeftInMillis : Long = 0
-    var Left_time : Long = 0
     init{
         paint.isFilterBitmap = true
         paint.isAntiAlias = true
@@ -235,6 +285,18 @@ class GameActivity : AppCompatActivity() {
 
             paint.color = Color.GREEN
             canvas.drawCircle((Xpoint).toFloat(),(Ypoint).toFloat(),(rad).toFloat(),paint)
+
+            paint.color = Color.RED
+            for (i in 0 until klet_height *(klet_width - 1)) {
+                if (Mas_sten[i] == 1) {
+                    canvas.drawLine(((i % (klet_width - 1)) * kletka + kletka).toFloat(), (0 + kletka * (i / (klet_width - 1))).toFloat(), ((i % (klet_width - 1)) * kletka + kletka).toFloat(), (kletka + kletka * (i / (klet_width - 1))).toFloat(), paint)
+                }
+            }
+            for (i in klet_height *(klet_width - 1) + 1 until ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))) {
+                if (Mas_sten[i] == 1) {
+                    canvas.drawLine((0 + kletka * ((i - klet_height *(klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height *(klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), (kletka + kletka * ((i - klet_height *(klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height *(klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), paint)
+                }
+            }
         }
     }
 
@@ -272,5 +334,34 @@ class GameActivity : AppCompatActivity() {
 
     companion object {
         val all_time: Long = 3600000
+    }
+
+
+    fun generate() {
+        Mas_klet = Array(klet_height, { Array(klet_width, { 10000 }) })
+        Mas_sten = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
+        for (i in 0 until generate_sten) {
+            n = (0..((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))).random()
+            if (n < (klet_height *(klet_width - 1))) {
+                Mas_klet[n / (klet_width - 1)][n % (klet_width - 1)] = Mas_klet[n / (klet_width - 1)][n % (klet_width - 1)] / 1000 * 1000 + Mas_klet[n / (klet_width - 1)][n % (klet_width - 1)] % 100 + 200
+                Mas_klet[n / (klet_width - 1)][n % (klet_width - 1) + 1] = Mas_klet[n / (klet_width - 1)][n % (klet_width - 1) + 1] / 10 * 10 + 4
+                Mas_sten[n] = 1
+            } else {
+                n = n - (klet_height *(klet_width - 1))
+                Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] = Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] / 100 * 100 + Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] % 10 + 30
+                Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] = Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] / 10000 * 10000 + Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] % 1000 + 1000
+                Mas_sten[n + (klet_width *(klet_height - 1))] = 1
+            }
+        }
+
+        for (i in 0 until klet_height) {
+            for (j in 0 until klet_width) {
+                if (Mas_klet[i][j] % 10 != 0) k = k + 1
+                if (Mas_klet[i][j] % 100 - Mas_klet[i][j] % 10 != 0) k = k + 1
+                if (Mas_klet[i][j] % 1000 - Mas_klet[i][j] % 100 != 0) k = k + 1
+                Mas_klet[i][j] = 10000 * k + Mas_klet[i][j] % 10000
+                k = 0
+            }
+        }
     }
 }
