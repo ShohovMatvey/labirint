@@ -53,7 +53,7 @@ class GameActivity : AppCompatActivity() {
 
         startTimer()
 
-        val layout1 = findViewById(R.id.layout1) as ConstraintLayout
+        val layout1 = findViewById<ConstraintLayout>(R.id.layout1)
         val background = Canvass(this)
         layout1.addView(background)
         val kletka = 30
