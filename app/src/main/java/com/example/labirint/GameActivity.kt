@@ -71,7 +71,7 @@ class GameActivity : AppCompatActivity() {
             intent.putExtra("Xpoint_old", (Xpoint_old).toString())
             intent.putExtra("Ypoint_old", (Ypoint_old).toString())
             intent.putExtra("Left_time", (LeftInMillis).toString())
-            intent.putExtra("but_home", ("no").toString())
+            intent.putExtra("But_home", ("no").toString())
             finish()
             startActivity(intent)
         }
@@ -176,7 +176,7 @@ class GameActivity : AppCompatActivity() {
         intent.putExtra("Xpoint_old", (Xpoint_old).toString())
         intent.putExtra("Ypoint_old", (Ypoint_old).toString())
         intent.putExtra("Left_time", (LeftInMillis).toString())
-        intent.putExtra("but_home", ("yes").toString())
+        intent.putExtra("But_home", ("yes").toString())
         finish()
         startActivity(intent)
     }
