@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
         new_game.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             val kletka = 30
-            Xpoint = ((0..19).random()) * kletka + kletka
-            Ypoint = ((0..16).random()) * kletka + kletka
+            Xpoint = ((0..19).random()) * kletka + kletka / 2
+            Ypoint = ((0..16).random()) * kletka + kletka / 2
             Xpoint_start = Xpoint
             Ypoint_start = Ypoint
             Xpoint_old = Xpoint
@@ -125,17 +125,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //generate()
-        //for (i in 0 until 10) {
-        //    for (j in 0 until 10) {
-        //        print(mas_sten[i])
-        //    }
-        //}
-        //for (i in 0 until 10) {
-        //    for (j in 0 until 10) {
-        //        print(mas_klet[i])
-        //    }
-        //}
+       // generate()
+       // for (i in 0 until 10) {
+       //     for (j in 0 until 10) {
+       //         print(mas_sten[i])
+       //     }
+       // }
+       // for (i in 0 until 10) {
+       //     for (j in 0 until 10) {
+       //         print(mas_klet[i])
+       //     }
+       // }
     }
 
     override fun onUserLeaveHint() {

@@ -350,7 +350,7 @@ class GameActivity : AppCompatActivity() {
                 n = n - (klet_height *(klet_width - 1))
                 Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] = Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] / 100 * 100 + Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] % 10 + 30
                 Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] = Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] / 10000 * 10000 + Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] % 1000 + 1000
-                Mas_sten[n + (klet_width *(klet_height - 1))] = 1
+                Mas_sten[n + (klet_height *(klet_width - 1))] = 1
             }
         }
 
@@ -359,9 +359,20 @@ class GameActivity : AppCompatActivity() {
                 if (Mas_klet[i][j] % 10 != 0) k = k + 1
                 if (Mas_klet[i][j] % 100 - Mas_klet[i][j] % 10 != 0) k = k + 1
                 if (Mas_klet[i][j] % 1000 - Mas_klet[i][j] % 100 != 0) k = k + 1
+                if (Mas_klet[i][j] % 10000 - Mas_klet[i][j]%1000 !=0) k = k+1
                 Mas_klet[i][j] = 10000 * k + Mas_klet[i][j] % 10000
                 k = 0
             }
         }
+        /*for (i in 0 until klet_height) {
+            for (j in 0 until klet_width) {
+                print("$i $j ")
+                println(Mas_klet[i][j])
+            }
+        }
+        for (i in 0 until ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))){
+            print("$i ")
+            println(Mas_sten[i])
+        }*/
     }
 }
