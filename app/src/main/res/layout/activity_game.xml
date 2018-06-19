@@ -22,10 +22,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
-
     </android.support.constraint.ConstraintLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/top"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
@@ -33,31 +32,34 @@
         android:layout_toEndOf="@+id/left"
         android:text="@string/top"
         style="@style/Base.Widget.AppCompat.Button.Colored"
+        app:srcCompat="?android:attr/homeAsUpIndicator"
         android:textSize="8sp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/left"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/down"
         android:text="@string/left"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="?android:attr/homeAsUpIndicator" />
 
-    <Button
+    <ImageButton
         android:id="@+id/down"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/right"
+        app:srcCompat="?android:attr/homeAsUpIndicator"
         android:text="@string/down"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/right"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
@@ -66,6 +68,7 @@
         android:text="@string/right"
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:textSize="8sp"
+        app:srcCompat="?android:attr/homeAsUpIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

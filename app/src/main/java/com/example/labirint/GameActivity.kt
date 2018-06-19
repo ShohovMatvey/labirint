@@ -52,6 +52,9 @@ class GameActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_game)
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        top.animate().rotation(90F)
+        right.animate().rotation(180F)
+        down.animate().rotation(270F)
         val xpoint = intent.getStringExtra("Xpoint")
         if (xpoint != null) Xpoint = (xpoint).toInt()
         val ypoint = intent.getStringExtra("Ypoint")
