@@ -8,13 +8,13 @@
 
     <Button
         android:id="@+id/menu"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:text="@string/menu"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
-        android:textSize="10sp"/>
+        android:textSize="10sp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout1"
@@ -26,14 +26,14 @@
 
     <ImageButton
         android:id="@+id/top"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/left"
         android:layout_toEndOf="@+id/left"
         android:text="@string/top"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
-        app:srcCompat="?android:attr/homeAsUpIndicator"
-        android:textSize="8sp" />
+        android:textSize="8sp"
+        app:srcCompat="?android:attr/homeAsUpIndicator" />
 
     <ImageButton
         android:id="@+id/left"
@@ -41,6 +41,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
         android:layout_toStartOf="@+id/down"
         android:text="@string/left"
         android:textSize="8sp"
@@ -54,32 +55,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/right"
-        app:srcCompat="?android:attr/homeAsUpIndicator"
         android:text="@string/down"
         android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="?android:attr/homeAsUpIndicator" />
 
     <ImageButton
         android:id="@+id/right"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="50dp"
         android:text="@string/right"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:textSize="8sp"
-        app:srcCompat="?android:attr/homeAsUpIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="?android:attr/homeAsUpIndicator" />
 
     <Button
         android:id="@+id/restart"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/menu"
         android:text="@string/restart"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:textSize="10sp"
         app:layout_constraintTop_toTopOf="parent" />
 
