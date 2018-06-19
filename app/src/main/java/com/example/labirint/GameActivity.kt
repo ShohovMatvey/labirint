@@ -55,6 +55,11 @@ class GameActivity : AppCompatActivity() {
         top.animate().rotation(90F)
         right.animate().rotation(180F)
         down.animate().rotation(270F)
+
+        val dataBase = DBHelper(this)
+
+        dataBase.read()
+
         val xpoint = intent.getStringExtra("Xpoint")
         if (xpoint != null) Xpoint = (xpoint).toInt()
         val ypoint = intent.getStringExtra("Ypoint")
@@ -262,34 +267,34 @@ class GameActivity : AppCompatActivity() {
             paint.color = Color.GRAY
             canvas.drawRect((0).toFloat(),(0).toFloat(),(max_h).toFloat(),(max_w).toFloat(), paint)
 
-            paint.color = Color.BLACK
-            run {
-                var i = kletka
-                while (i <= max_h) {
-                    canvas.drawLine((i).toFloat(), (0).toFloat(), (i).toFloat(), (max_w).toFloat(), paint)
-                    i += kletka
-                }
-            }
+            //paint.color = Color.WHITE
+            //run {
+            //    var i = kletka
+            //    while (i <= max_h) {
+            //        canvas.drawLine((i).toFloat(), (0).toFloat(), (i).toFloat(), (max_w).toFloat(), paint)
+            //        i += kletka
+            //    }
+            //}
             var i = kletka
             while (i <= max_w) {
                 canvas.drawLine((0).toFloat(), (i).toFloat(), (max_h).toFloat(), (i).toFloat(), paint)
                 i += kletka
             }
 
-            paint.color = Color.RED
+            paint.color = Color.BLACK
             canvas.drawLine((0).toFloat(), (max_w).toFloat(), (max_h).toFloat(), (max_w).toFloat(), paint)
             canvas.drawLine((0).toFloat(), (0).toFloat(), (max_h).toFloat(), (0).toFloat(), paint)
             canvas.drawLine((max_h).toFloat(), (0).toFloat(), (max_h).toFloat(), (max_w).toFloat(), paint)
             canvas.drawLine((0).toFloat(), (0).toFloat(), (0).toFloat(), (max_w).toFloat(), paint)
 
-            paint.color = Color.YELLOW
+            paint.color = Color.rgb(250, 231, 181)
             canvas.drawRect((Xpoint - kletka/2 + 1).toFloat(),(Ypoint - kletka/2 + 1).toFloat(),(Xpoint + kletka/2 - 1).toFloat(),(Ypoint + kletka/2 - 1).toFloat(), paint)
             canvas.drawRect((Xpoint_old - kletka/2 + 1).toFloat(),(Ypoint_old - kletka/2 + 1).toFloat(),(Xpoint_old + kletka/2 - 1).toFloat(),(Ypoint_old + kletka/2 - 1).toFloat(), paint)
 
             paint.color = Color.GREEN
             canvas.drawCircle((Xpoint).toFloat(),(Ypoint).toFloat(),(rad).toFloat(),paint)
 
-            paint.color = Color.RED
+            paint.color = Color.BLACK
             for (i in 0 until klet_height *(klet_width - 1)) {
                 if (Mas_sten[i] == 1) {
                     canvas.drawLine(((i % (klet_width - 1)) * kletka + kletka).toFloat(), (0 + kletka * (i / (klet_width - 1))).toFloat(), ((i % (klet_width - 1)) * kletka + kletka).toFloat(), (kletka + kletka * (i / (klet_width - 1))).toFloat(), paint)

@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
         val kletka = 30
 
+        val dataBase = DBHelper(this)
+
         var Xpoint: Int = ((0..19).random()) * kletka + kletka / 2
         var Ypoint: Int = ((0..16).random()) * kletka + kletka / 2
         var Xpoint_start = Xpoint
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Xpoint_old", (Xpoint_old).toString())
             intent.putExtra("Ypoint_old", (Ypoint_old).toString())
             intent.putExtra("Left_time", (Left_time).toString())
+
             finish()
             startActivity(intent)
         }
@@ -92,6 +95,13 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Xpoint_old", (Xpoint_start).toString())
             intent.putExtra("Ypoint_old", (Ypoint_start).toString())
             intent.putExtra("Left_time", (Left_time).toString())
+            dataBase.add(GameState((Xpoint).toString(),
+                    (Ypoint).toString(),
+                    (Xpoint_start).toString(),
+                    (Ypoint_start).toString(),
+                    (Xpoint_old).toString(),
+                    (Ypoint_old).toString(),
+                    (Left_time).toString()))
             //intent.putExtra("Mas_klet", (Mas_klet).toString())
             //intent.putExtra("Mas_sten", (Mas_sten).toString())
             finish()
