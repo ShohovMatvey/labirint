@@ -8,18 +8,18 @@
     android:background="@drawable/drangleic_castle">
 
     <Button
-        android:id="@+id/begin"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:id="@+id/contin"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:background="@color/colorAccent2"
         android:text="@string/begin" />
 
     <Button
         android:id="@+id/new_game"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:background="@color/colorAccent2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
 
     <Button
         android:id="@+id/exit"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:background="@color/colorAccent2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/stat"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:background="@color/colorAccent2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

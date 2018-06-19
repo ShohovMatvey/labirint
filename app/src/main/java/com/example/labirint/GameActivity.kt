@@ -35,6 +35,7 @@ class GameActivity : AppCompatActivity() {
     var klet_width : Int = 19
     var klet_height : Int = 16
 
+    val dataBase = DBHelper(this)
     lateinit var background: Canvass
     var timer: TextView? = null
     var CountDownTimer: CountDownTimer? = null
@@ -43,6 +44,7 @@ class GameActivity : AppCompatActivity() {
     var Mas_sten: Array<Int> = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
     var k : Int = 0
     var n : Int = 0
+    var win_sten : Int = 0
     var generate_sten = ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))/2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +58,9 @@ class GameActivity : AppCompatActivity() {
         right.animate().rotation(180F)
         down.animate().rotation(270F)
 
-        val dataBase = DBHelper(this)
-
         dataBase.read()
+        //var res = dataBase.read()
+        //res.toString()
 
         val xpoint = intent.getStringExtra("Xpoint")
         if (xpoint != null) Xpoint = (xpoint).toInt()
@@ -75,6 +77,7 @@ class GameActivity : AppCompatActivity() {
         val left_time = intent.getStringExtra("Left_time")
         if (left_time != null) Left_time = (left_time).toLong()
         LeftInMillis = Left_time
+        generate()
 
         //val mas_klet = intent.getStringExtra("Mas_klet")
         //for (i in 0 until 10) {
@@ -82,7 +85,6 @@ class GameActivity : AppCompatActivity() {
                 //if (mas_klet[i][j] != null) Mas_klet = (mas_klet[i][j]).toInt()
             //}
         //}
-
 
 
         startTimer()
@@ -98,6 +100,15 @@ class GameActivity : AppCompatActivity() {
             pauseTimer()
 
             val intent = Intent(this,MainActivity :: class.java )
+            dataBase.add(GameState(
+                    (Xpoint).toString(),
+                    (Ypoint).toString(),
+                    (Xpoint_start).toString(),
+                    (Ypoint_start).toString(),
+                    (Xpoint_old).toString(),
+                    (Ypoint_old).toString(),
+                    (Left_time).toString()))
+
             intent.putExtra("Xpoint", (Xpoint).toString())
             intent.putExtra("Ypoint", (Ypoint).toString())
             intent.putExtra("Xpoint_start", (Xpoint_start).toString())
@@ -137,7 +148,20 @@ class GameActivity : AppCompatActivity() {
         }
 
         top.setOnClickListener{
-            if ((Ypoint < kletka)||
+            if (((Ypoint - kletka / 2) / kletka == 0)&&((Xpoint - kletka / 2) / kletka == win_sten)&&(win_sten in (0..klet_width))){
+                pauseTimer()
+                resetTimer()
+                startTimer()
+                Xpoint = ((0..19).random())*30 + 15
+                Ypoint = ((0..16).random())*30 + 15
+                Xpoint_start = Xpoint
+                Ypoint_start = Ypoint
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                generate()
+                background.invalidate()
+            }
+            else if ((Ypoint < kletka)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 11000)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030)||
@@ -160,7 +184,20 @@ class GameActivity : AppCompatActivity() {
         }
 
         down.setOnClickListener{
-            if ((Ypoint > max_w - kletka)||
+            if (((Ypoint - kletka / 2) / kletka == klet_height - 1)&&((Xpoint - kletka / 2) / kletka == win_sten - klet_width)&&(win_sten in (klet_width..(2 * klet_width)))){
+                pauseTimer()
+                resetTimer()
+                startTimer()
+                Xpoint = ((0..19).random())*30 + 15
+                Ypoint = ((0..16).random())*30 + 15
+                Xpoint_start = Xpoint
+                Ypoint_start = Ypoint
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                generate()
+                background.invalidate()
+            }
+            else if ((Ypoint > max_w - kletka)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10030)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230)||
@@ -183,7 +220,20 @@ class GameActivity : AppCompatActivity() {
         }
 
         right.setOnClickListener{
-            if ((Xpoint > max_h - kletka)||
+            if (((Xpoint - kletka / 2) / kletka == klet_width - 1)&&((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width - klet_height - 3)&&(win_sten in ((2 * klet_width + klet_height)..(2 * (klet_width + klet_height))))){
+                pauseTimer()
+                resetTimer()
+                startTimer()
+                Xpoint = ((0..19).random())*30 + 15
+                Ypoint = ((0..16).random())*30 + 15
+                Xpoint_start = Xpoint
+                Ypoint_start = Ypoint
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                generate()
+                background.invalidate()
+            }
+            else if ((Xpoint > max_h - kletka)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10200)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230)||
@@ -206,7 +256,20 @@ class GameActivity : AppCompatActivity() {
         }
 
         left.setOnClickListener{
-            if ((Xpoint < kletka)||
+            if (((Xpoint - kletka / 2) / kletka == 0)&&((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width)&&(win_sten in (2 * klet_width..(2 * klet_width + klet_height)))){
+                pauseTimer()
+                resetTimer()
+                startTimer()
+                Xpoint = ((0..19).random())*30 + 15
+                Ypoint = ((0..16).random())*30 + 15
+                Xpoint_start = Xpoint
+                Ypoint_start = Ypoint
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                generate()
+                background.invalidate()
+            }
+            else if ((Xpoint < kletka)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10004)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21004)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20034)||
@@ -236,6 +299,15 @@ class GameActivity : AppCompatActivity() {
         pauseTimer()
 
         val intent = Intent(this,MainActivity :: class.java )
+        dataBase.add(GameState(
+                (Xpoint).toString(),
+                (Ypoint).toString(),
+                (Xpoint_start).toString(),
+                (Ypoint_start).toString(),
+                (Xpoint_old).toString(),
+                (Ypoint_old).toString(),
+                (Left_time).toString()))
+
         intent.putExtra("Xpoint", (Xpoint).toString())
         intent.putExtra("Ypoint", (Ypoint).toString())
         intent.putExtra("Xpoint_start", (Xpoint_start).toString())
@@ -267,14 +339,14 @@ class GameActivity : AppCompatActivity() {
             paint.color = Color.GRAY
             canvas.drawRect((0).toFloat(),(0).toFloat(),(max_h).toFloat(),(max_w).toFloat(), paint)
 
-            //paint.color = Color.WHITE
-            //run {
-            //    var i = kletka
-            //    while (i <= max_h) {
-            //        canvas.drawLine((i).toFloat(), (0).toFloat(), (i).toFloat(), (max_w).toFloat(), paint)
-            //        i += kletka
-            //    }
-            //}
+            paint.color = Color.rgb(169,169,169)
+            run {
+                var i = kletka
+                while (i <= max_h) {
+                    canvas.drawLine((i).toFloat(), (0).toFloat(), (i).toFloat(), (max_w).toFloat(), paint)
+                    i += kletka
+                }
+            }
             var i = kletka
             while (i <= max_w) {
                 canvas.drawLine((0).toFloat(), (i).toFloat(), (max_h).toFloat(), (i).toFloat(), paint)
@@ -305,6 +377,12 @@ class GameActivity : AppCompatActivity() {
                     canvas.drawLine((0 + kletka * ((i - klet_height *(klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height *(klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), (kletka + kletka * ((i - klet_height *(klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height *(klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), paint)
                 }
             }
+
+            paint.color = Color.GREEN
+            if (win_sten < klet_width) canvas.drawRect((0 + kletka * win_sten).toFloat(), (0).toFloat(), (kletka + kletka * win_sten).toFloat(), (5).toFloat(), paint)
+            else if (win_sten < klet_width * 2) canvas.drawRect((0 + kletka * (win_sten - klet_width)).toFloat(), (max_w - 5).toFloat(), (kletka + kletka * (win_sten - klet_width)).toFloat(), (max_w).toFloat(), paint)
+            else if (win_sten < klet_height + klet_width * 2) canvas.drawRect((0).toFloat(), (0 + kletka * (win_sten - klet_width * 2)).toFloat(), (5).toFloat(), (kletka + kletka * (win_sten - klet_width * 2)).toFloat(), paint)
+            else if (win_sten < (klet_height + klet_width) * 2) canvas.drawRect((max_h - 5).toFloat(), (0 + kletka * (win_sten - klet_width * 2 - klet_width)).toFloat(), (max_h).toFloat(), (kletka + kletka * (win_sten - klet_width * 2 - klet_width)).toFloat(), paint)
         }
     }
 
@@ -367,20 +445,11 @@ class GameActivity : AppCompatActivity() {
                 if (Mas_klet[i][j] % 10 != 0) k = k + 1
                 if (Mas_klet[i][j] % 100 - Mas_klet[i][j] % 10 != 0) k = k + 1
                 if (Mas_klet[i][j] % 1000 - Mas_klet[i][j] % 100 != 0) k = k + 1
-                if (Mas_klet[i][j] % 10000 - Mas_klet[i][j]%1000 !=0) k = k+1
+                if (Mas_klet[i][j] % 10000 - Mas_klet[i][j] % 1000 != 0) k = k + 1
                 Mas_klet[i][j] = 10000 * k + Mas_klet[i][j] % 10000
                 k = 0
             }
         }
-        /*for (i in 0 until klet_height) {
-            for (j in 0 until klet_width) {
-                print("$i $j ")
-                println(Mas_klet[i][j])
-            }
-        }
-        for (i in 0 until ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))){
-            print("$i ")
-            println(Mas_sten[i])
-        }*/
+        win_sten = (0..((klet_width + klet_height) * 2 - 1)).random()
     }
 }

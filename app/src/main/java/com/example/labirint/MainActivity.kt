@@ -16,11 +16,14 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var Mas_klet: Array<Array<Int>> = Array(10, { Array(10, { 10000 }) })
-    var Mas_sten: Array<Int> = Array(180, { 0 })
+    val kletka = 30
+    var klet_width : Int = 19
+    var klet_height : Int = 16
+    var Mas_klet: Array<Array<Int>> = Array(klet_height, { Array(klet_width, { 10000 }) })
+    var Mas_sten: Array<Int> = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
     var k : Int = 0
     var n : Int = 0
-    var generate_sten = 70
+    var generate_sten = ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))/2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
-        val kletka = 30
+
 
         val dataBase = DBHelper(this)
 
@@ -64,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             super.onUserLeaveHint()
         }
 
-        begin.setOnClickListener {
+        contin.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             intent.putExtra("Xpoint", (Xpoint).toString())
             intent.putExtra("Ypoint", (Ypoint).toString())
@@ -95,7 +98,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Xpoint_old", (Xpoint_start).toString())
             intent.putExtra("Ypoint_old", (Ypoint_start).toString())
             intent.putExtra("Left_time", (Left_time).toString())
-            dataBase.add(GameState((Xpoint).toString(),
+
+            dataBase.add(GameState(
+                    (Xpoint).toString(),
                     (Ypoint).toString(),
                     (Xpoint_start).toString(),
                     (Ypoint_start).toString(),
@@ -131,48 +136,41 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Xpoint_old", (Xpoint_old).toString())
             intent.putExtra("Ypoint_old", (Ypoint_old).toString())
             intent.putExtra("Left_time", (Left_time).toString())
+
             finish()
             startActivity(intent)
         }
-
-       // generate()
-       // for (i in 0 until 10) {
-       //     for (j in 0 until 10) {
-       //         print(mas_sten[i])
-       //     }
-       // }
-       // for (i in 0 until 10) {
-       //     for (j in 0 until 10) {
-       //         print(mas_klet[i])
-       //     }
-       // }
     }
 
     override fun onUserLeaveHint() {
+
         finish()
         super.onUserLeaveHint()
     }
 
     fun generate() {
+        Mas_klet = Array(klet_height, { Array(klet_width, { 10000 }) })
+        Mas_sten = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
         for (i in 0 until generate_sten) {
-            n = (0..180).random()
-            if (n < 90) {
-                Mas_klet[n / 9][n % 9] = Mas_klet[n / 9][n % 9] / 1000 * 1000 + Mas_klet[n / 9][n % 9] % 100 + 200
-                Mas_klet[n / 9][n % 9 + 1] = Mas_klet[n / 9][n % 9 + 1] / 10 * 10 + 4
+            n = (0..((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))).random()
+            if (n < (klet_height *(klet_width - 1))) {
+                Mas_klet[n / (klet_width - 1)][n % (klet_width - 1)] = Mas_klet[n / (klet_width - 1)][n % (klet_width - 1)] / 1000 * 1000 + Mas_klet[n / (klet_width - 1)][n % (klet_width - 1)] % 100 + 200
+                Mas_klet[n / (klet_width - 1)][n % (klet_width - 1) + 1] = Mas_klet[n / (klet_width - 1)][n % (klet_width - 1) + 1] / 10 * 10 + 4
                 Mas_sten[n] = 1
             } else {
-                n = n - 90
-                Mas_klet[n % 9][n / 9] = Mas_klet[n % 9][n / 9] / 100 * 100 + Mas_klet[n % 9][n / 9] % 10 + 30
-                Mas_klet[n % 9 + 1][n / 9] = Mas_klet[n % 9 + 1][n / 9] / 10000 * 10000 + Mas_klet[n % 9 + 1][n / 9] % 1000 + 1000
-                Mas_sten[n + 90] = 1
+                n = n - (klet_height *(klet_width - 1))
+                Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] = Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] / 100 * 100 + Mas_klet[n % (klet_height - 1)][n / (klet_height - 1)] % 10 + 30
+                Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] = Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] / 10000 * 10000 + Mas_klet[n % (klet_height - 1) + 1][n / (klet_height - 1)] % 1000 + 1000
+                Mas_sten[n + (klet_height *(klet_width - 1))] = 1
             }
         }
 
-        for (i in 0 until 10) {
-            for (j in 0 until 10) {
+        for (i in 0 until klet_height) {
+            for (j in 0 until klet_width) {
                 if (Mas_klet[i][j] % 10 != 0) k = k + 1
                 if (Mas_klet[i][j] % 100 - Mas_klet[i][j] % 10 != 0) k = k + 1
                 if (Mas_klet[i][j] % 1000 - Mas_klet[i][j] % 100 != 0) k = k + 1
+                if (Mas_klet[i][j] % 10000 - Mas_klet[i][j]% 1000 != 0) k = k + 1
                 Mas_klet[i][j] = 10000 * k + Mas_klet[i][j] % 10000
                 k = 0
             }
