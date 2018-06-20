@@ -93,8 +93,8 @@ class GameActivity : AppCompatActivity() {
         val background = Canvass(this)
         layout1.addView(background)
         val kletka = 30
-        val max_w = 480
-        val max_h = 570
+        val max_height = 480
+        val max_width = 570
 
         menu.setOnClickListener{
             pauseTimer()
@@ -197,7 +197,7 @@ class GameActivity : AppCompatActivity() {
                 generate()
                 background.invalidate()
             }
-            else if ((Ypoint > max_w - kletka)||
+            else if ((Ypoint > max_height - kletka)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10030)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230)||
@@ -220,7 +220,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         right.setOnClickListener{
-            if (((Xpoint - kletka / 2) / kletka == klet_width - 1)&&((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width - klet_height - 3)&&(win_sten in ((2 * klet_width + klet_height)..(2 * (klet_width + klet_height))))){
+            if (((Xpoint - kletka / 2) / kletka == klet_width - 1)&&((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width - klet_height)&&(win_sten in ((2 * klet_width + klet_height)..(2 * (klet_width + klet_height))))){
                 pauseTimer()
                 resetTimer()
                 startTimer()
@@ -233,7 +233,7 @@ class GameActivity : AppCompatActivity() {
                 generate()
                 background.invalidate()
             }
-            else if ((Xpoint > max_h - kletka)||
+            else if ((Xpoint > max_width - kletka)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10200)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200)||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230)||
@@ -333,31 +333,31 @@ class GameActivity : AppCompatActivity() {
 
         override fun onDraw(canvas: Canvas) {
             val kletka = 30
-            val max_w = 480
-            val max_h = 570
+            val max_height = 480
+            val max_width = 570
             val rad = 10
             paint.color = Color.GRAY
-            canvas.drawRect((0).toFloat(),(0).toFloat(),(max_h).toFloat(),(max_w).toFloat(), paint)
+            canvas.drawRect((0).toFloat(),(0).toFloat(),(max_width).toFloat(),(max_height).toFloat(), paint)
 
             paint.color = Color.rgb(169,169,169)
             run {
                 var i = kletka
-                while (i <= max_h) {
-                    canvas.drawLine((i).toFloat(), (0).toFloat(), (i).toFloat(), (max_w).toFloat(), paint)
+                while (i <= max_width) {
+                    canvas.drawLine((i).toFloat(), (0).toFloat(), (i).toFloat(), (max_height).toFloat(), paint)
                     i += kletka
                 }
             }
             var i = kletka
-            while (i <= max_w) {
-                canvas.drawLine((0).toFloat(), (i).toFloat(), (max_h).toFloat(), (i).toFloat(), paint)
+            while (i <= max_height) {
+                canvas.drawLine((0).toFloat(), (i).toFloat(), (max_width).toFloat(), (i).toFloat(), paint)
                 i += kletka
             }
 
             paint.color = Color.BLACK
-            canvas.drawLine((0).toFloat(), (max_w).toFloat(), (max_h).toFloat(), (max_w).toFloat(), paint)
-            canvas.drawLine((0).toFloat(), (0).toFloat(), (max_h).toFloat(), (0).toFloat(), paint)
-            canvas.drawLine((max_h).toFloat(), (0).toFloat(), (max_h).toFloat(), (max_w).toFloat(), paint)
-            canvas.drawLine((0).toFloat(), (0).toFloat(), (0).toFloat(), (max_w).toFloat(), paint)
+            canvas.drawLine((0).toFloat(), (max_height).toFloat(), (max_width).toFloat(), (max_height).toFloat(), paint)
+            canvas.drawLine((0).toFloat(), (0).toFloat(), (max_width).toFloat(), (0).toFloat(), paint)
+            canvas.drawLine((max_width).toFloat(), (0).toFloat(), (max_width).toFloat(), (max_height).toFloat(), paint)
+            canvas.drawLine((0).toFloat(), (0).toFloat(), (0).toFloat(), (max_height).toFloat(), paint)
 
             paint.color = Color.rgb(250, 231, 181)
             canvas.drawRect((Xpoint - kletka/2 + 1).toFloat(),(Ypoint - kletka/2 + 1).toFloat(),(Xpoint + kletka/2 - 1).toFloat(),(Ypoint + kletka/2 - 1).toFloat(), paint)
@@ -380,9 +380,9 @@ class GameActivity : AppCompatActivity() {
 
             paint.color = Color.GREEN
             if (win_sten < klet_width) canvas.drawRect((0 + kletka * win_sten).toFloat(), (0).toFloat(), (kletka + kletka * win_sten).toFloat(), (5).toFloat(), paint)
-            else if (win_sten < klet_width * 2) canvas.drawRect((0 + kletka * (win_sten - klet_width)).toFloat(), (max_w - 5).toFloat(), (kletka + kletka * (win_sten - klet_width)).toFloat(), (max_w).toFloat(), paint)
+            else if (win_sten < klet_width * 2) canvas.drawRect((0 + kletka * (win_sten - klet_width)).toFloat(), (max_height - 5).toFloat(), (kletka + kletka * (win_sten - klet_width)).toFloat(), (max_height).toFloat(), paint)
             else if (win_sten < klet_height + klet_width * 2) canvas.drawRect((0).toFloat(), (0 + kletka * (win_sten - klet_width * 2)).toFloat(), (5).toFloat(), (kletka + kletka * (win_sten - klet_width * 2)).toFloat(), paint)
-            else if (win_sten < (klet_height + klet_width) * 2) canvas.drawRect((max_h - 5).toFloat(), (0 + kletka * (win_sten - klet_width * 2 - klet_width)).toFloat(), (max_h).toFloat(), (kletka + kletka * (win_sten - klet_width * 2 - klet_width)).toFloat(), paint)
+            else if (win_sten < (klet_height + klet_width) * 2) canvas.drawRect((max_width - 5).toFloat(), (0 + kletka * (win_sten - klet_width * 2 - klet_height)).toFloat(), (max_width).toFloat(), (kletka + kletka * (win_sten - klet_width * 2 - klet_height)).toFloat(), paint)
         }
     }
 
