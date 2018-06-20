@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/drangleic_castle">
+    android:background="@drawable/drangleic_castle"
+    tools:context=".MainActivity">
 
     <Button
         android:id="@+id/contin"
@@ -19,31 +19,43 @@
 
     <Button
         android:id="@+id/new_game"
-        android:background="@color/colorAccent2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
+        android:background="@color/colorAccent2"
         android:text="@string/new_game" />
 
     <Button
         android:id="@+id/exit"
-        android:background="@color/colorAccent2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/spinner"
+        android:layout_below="@+id/spinner"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="220dp"
+        android:background="@color/colorAccent2"
         android:text="@string/exit" />
 
     <Button
         android:id="@+id/stat"
-        android:background="@color/colorAccent2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
+        android:background="@color/colorAccent2"
         android:text="статистика" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/contin"
+        android:background="@color/colorAccent2" />
+
 </RelativeLayout>

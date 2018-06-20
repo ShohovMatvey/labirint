@@ -1,5 +1,6 @@
 package com.example.labirint
 
+
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +13,11 @@ import android.view.WindowManager
 import com.example.labirint.GameActivity.Companion.all_time
 import kotlinx.android.synthetic.main.dialog_main.view.*
 import java.util.*
+import android.view.View
+import kotlinx.android.synthetic.main.activity_main.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+//import com.megaplanner.myapplication3.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +39,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
 
+        // Initializing a String Array
+        val difficult = arrayOf("Легко","Нормально","Сложно","Хард")
 
+        // Initializing an ArrayAdapter
+        val adapter = ArrayAdapter(
+                this, // Context
+                android.R.layout.simple_spinner_item, // Layout
+                difficult // Array
+        )
+
+        // Set the drop down view resource
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+
+        // Finally, data bind the spinner object with dapter
+        spinner.adapter = adapter;
+
+        // Set an on item selected listener for spinner object
+        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent:AdapterView<*>, view: View, position: Int, id: Long){
+                // Display the selected item text on text view
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>){
+                // Another interface callback
+            }
+        }
         val dataBase = DBHelper(this)
 
         var Xpoint: Int = ((0..19).random()) * kletka + kletka / 2
