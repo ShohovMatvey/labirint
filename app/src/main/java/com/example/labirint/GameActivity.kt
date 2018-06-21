@@ -89,28 +89,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         if (New_game == "yes") {
-            var k = 0
-            while( k < 20) {
-                generate()
-                Vozm_klet = Array(klet_height, { Array(klet_width, { 0 }) })
-                Wave((Ypoint_start - kletka / 2) / kletka, (Xpoint_start - kletka / 2) / kletka)
-                k = 0
-                for (i in 0 until klet_height) {
-                    for (j in 0 until klet_width) {
-                        if (Vozm_klet[i][j] == 1) k += 1
-                    }
-                }
-            }
-            Dostup_stenka()
-            var key_width = (0..klet_width - 1).random()
-            var key_height = (0..klet_height - 1).random()
-            while (Vozm_klet[key_height][key_width] == 0) {
-                key_width = (0..klet_width - 1).random()
-                key_height = (0..klet_height - 1).random()
-            }
-            Xkey = key_width * kletka + kletka / 2
-            Ykey = key_height * kletka + kletka / 2
-            key_yes = false
+            gener_all()
         }
         /*else {
             val scores2 = dataBase.read_mas()
@@ -182,28 +161,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint_start = Ypoint
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
-                var k = 0
-                while( k < 20) {
-                    generate()
-                    Vozm_klet = Array(klet_height, { Array(klet_width, { 0 }) })
-                    Wave((Ypoint_start - kletka / 2) / kletka, (Xpoint_start - kletka / 2) / kletka)
-                    k = 0
-                    for (i in 0 until klet_height) {
-                        for (j in 0 until klet_width) {
-                            if (Vozm_klet[i][j] == 1) k += 1
-                        }
-                    }
-                }
-                Dostup_stenka()
-                var key_width = (0..klet_width - 1).random()
-                var key_height = (0..klet_height - 1).random()
-                while (Vozm_klet[key_height][key_width] == 0) {
-                    key_width = (0..klet_width - 1).random()
-                    key_height = (0..klet_height - 1).random()
-                }
-                Xkey = key_width * kletka + kletka / 2
-                Ykey = key_height * kletka + kletka / 2
-                key_yes = false
+                gener_all()
                 background.invalidate()
             }
             dial_view.no.setOnClickListener {
@@ -223,7 +181,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint_start = Ypoint
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
-                generate()
+                gener_all()
                 background.invalidate()
             } else if ((Ypoint < kletka) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 11000) ||
@@ -257,7 +215,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint_start = Ypoint
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
-                generate()
+                gener_all()
                 background.invalidate()
             } else if ((Ypoint > max_height - kletka) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10030) ||
@@ -291,7 +249,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint_start = Ypoint
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
-                generate()
+                gener_all()
                 background.invalidate()
             } else if ((Xpoint > max_width - kletka) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10200) ||
@@ -325,7 +283,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint_start = Ypoint
                 Xpoint_old = Xpoint
                 Ypoint_old = Ypoint
-                generate()
+                gener_all()
                 background.invalidate()
             } else if ((Xpoint < kletka) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10004) ||
@@ -431,7 +389,7 @@ class GameActivity : AppCompatActivity() {
             canvas.drawCircle((Xpoint).toFloat(), (Ypoint).toFloat(), (rad).toFloat(), paint)
 
             paint.color = Color.BLACK
-            for (i in 0 until klet_height * (klet_width - 1) - 1) {
+            for (i in 0 until klet_height * (klet_width - 1)) {
                 if (Mas_sten[i] == 1) {
                     canvas.drawLine(((i % (klet_width - 1)) * kletka + kletka).toFloat(), (0 + kletka * (i / (klet_width - 1))).toFloat(), ((i % (klet_width - 1)) * kletka + kletka).toFloat(), (kletka + kletka * (i / (klet_width - 1))).toFloat(), paint)
                 }
@@ -600,6 +558,38 @@ class GameActivity : AppCompatActivity() {
         var do_win_sten : Int = (0..i).random()
         while (Dostup_stenka[do_win_sten] < 0) do_win_sten = (0..i).random()
         win_sten = Dostup_stenka[do_win_sten]
+    }
+
+    fun gener_all(){
+        val display = windowManager.defaultDisplay
+        val metricsB = DisplayMetrics()
+        display.getMetrics(metricsB)
+
+        val max_height = metricsB.heightPixels
+        val kletka = max_height / klet_height
+        val max_width = kletka * klet_width
+        var k = 0
+        while( k < 20) {
+            generate()
+            Vozm_klet = Array(klet_height, { Array(klet_width, { 0 }) })
+            Wave((Ypoint_start - kletka / 2) / kletka, (Xpoint_start - kletka / 2) / kletka)
+            k = 0
+            for (i in 0 until klet_height) {
+                for (j in 0 until klet_width) {
+                    if (Vozm_klet[i][j] == 1) k += 1
+                }
+            }
+        }
+        Dostup_stenka()
+        var key_width = (0..klet_width - 1).random()
+        var key_height = (0..klet_height - 1).random()
+        while (Vozm_klet[key_height][key_width] == 0) {
+            key_width = (0..klet_width - 1).random()
+            key_height = (0..klet_height - 1).random()
+        }
+        Xkey = key_width * kletka + kletka / 2
+        Ykey = key_height * kletka + kletka / 2
+        key_yes = false
     }
 
     fun key_be(){
