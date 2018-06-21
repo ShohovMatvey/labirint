@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Window
@@ -20,14 +21,14 @@ import android.widget.ArrayAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    val kletka = 30
-    var klet_width : Int = 19
+    //val kletka = 30
+    var klet_width : Int = 16
     var klet_height : Int = 16
-    var Mas_klet: Array<Array<Int>> = Array(klet_height, { Array(klet_width, { 10000 }) })
-    var Mas_sten: Array<Int> = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
+    //var Mas_klet: Array<Array<Int>> = Array(klet_height, { Array(klet_width, { 10000 }) })
+    //var Mas_sten: Array<Int> = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
     var k : Int = 0
     var n : Int = 0
-    var generate_sten = ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))/2
+    //var generate_sten = ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))/2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,13 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
+        var display = windowManager.defaultDisplay
+        var metricsB = DisplayMetrics()
+        display.getMetrics(metricsB)
+
+        val max_height = metricsB.heightPixels
+        val kletka = max_height / klet_height
+        val max_width = kletka * klet_width
 
         val difficult = arrayOf("Легко","Нормально","Сложно","Хард")
         val adapter = ArrayAdapter(
