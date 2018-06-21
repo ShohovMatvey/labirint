@@ -45,14 +45,14 @@ class DBHelper(context: Context)
                 + "Kol_games_hard text,"
                 + "Kol_wins_hard text,"
                 + "Sred_time_hard text,"
-                + "Min_time_hard text," + ");"))
+                + "Min_time_hard text" + ");"))
 
         Log.d(LOG_TAG, "--- onCreate database ---")
         db.execSQL(("create table IF NOT EXISTS mytable3 ("
                 + "id integer primary key autoincrement,"
                 + "Mas_klet_str text,"
                 + "Mas_sten_str text,"
-                + "win_sten text," + ");"))
+                + "win_sten text" + ");"))
     }
 
 

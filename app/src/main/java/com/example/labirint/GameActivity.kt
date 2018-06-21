@@ -91,7 +91,7 @@ class GameActivity : AppCompatActivity() {
         if (New_game == "yes") {
             gener_all()
         }
-        /*else {
+        else {
             val scores2 = dataBase.read_mas()
             if (scores2 != null) {
                 Mas_klet_str = (scores2.Mas_klet_str)
@@ -108,7 +108,7 @@ class GameActivity : AppCompatActivity() {
             //        limit: Int = 0) : List<String>(source)
             //    }
             //}
-        }*/
+        }
 
 
         LeftInMillis = Left_time
@@ -133,10 +133,10 @@ class GameActivity : AppCompatActivity() {
                     (LeftInMillis).toString()))
 
             //dataBase.clear_mas()
-            //dataBase.add_mas(GameMassivActivity(
-            //        (Mas_klet_str),
-            //        (Mas_sten_str),
-            //        (win_sten).toString()))
+            dataBase.add_mas(GameMassivActivity(
+                    (Mas_klet_str),
+                    (Mas_sten_str),
+                    (win_sten).toString()))
 
 
             intent.putExtra("But_home", ("no").toString())
