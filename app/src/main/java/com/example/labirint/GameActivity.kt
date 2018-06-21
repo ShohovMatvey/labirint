@@ -17,7 +17,6 @@ import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
 import android.view.*
 import kotlinx.android.synthetic.main.dialog_main.view.*
-import javax.net.ssl.X509KeyManager
 
 
 class GameActivity : AppCompatActivity() {
@@ -54,6 +53,7 @@ class GameActivity : AppCompatActivity() {
     var Mas_sten_str : String = ""
     var New_game : String = "no"
     var generate_sten = ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1))) / 2
+    var key_yes : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -598,6 +598,11 @@ class GameActivity : AppCompatActivity() {
         var do_win_sten : Int = (0..i).random()
         while (Dostup_stenka[do_win_sten] < 0) do_win_sten = (0..i).random()
         win_sten = Dostup_stenka[do_win_sten]
+    }
+
+    fun key_be(){
+        if (Xpoint == Xkey) key_yes = true
+        else key_yes = false
     }
 
 }
