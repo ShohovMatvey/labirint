@@ -110,6 +110,7 @@ class GameActivity : AppCompatActivity() {
             }
             Xkey = key_width * kletka + kletka / 2
             Ykey = key_height * kletka + kletka / 2
+            key_yes = false
         }
         /*else {
             val scores2 = dataBase.read_mas()
@@ -202,6 +203,7 @@ class GameActivity : AppCompatActivity() {
                 }
                 Xkey = key_width * kletka + kletka / 2
                 Ykey = key_height * kletka + kletka / 2
+                key_yes = false
                 background.invalidate()
             }
             dial_view.no.setOnClickListener {
