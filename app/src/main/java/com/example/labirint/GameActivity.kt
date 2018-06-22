@@ -58,6 +58,10 @@ class GameActivity : AppCompatActivity() {
     var key_yes_was : Boolean = false
     var Dif : String = ""
 
+    lateinit var playerBitmap : Bitmap
+    lateinit var playerBitmap2 : Bitmap
+    lateinit var playerBitmap3 : Bitmap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -73,6 +77,9 @@ class GameActivity : AppCompatActivity() {
         val kletka = max_height / klet_height
         val max_width = kletka * klet_width
 
+        playerBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher_smile1),kletka - 2,kletka - 2,false)
+        playerBitmap2 = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher_smile2),kletka - 2,kletka - 2,false)
+        playerBitmap3 = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher_key),kletka - 2,kletka - 2,false)
         top.animate().rotation(90F)
         right.animate().rotation(180F)
         down.animate().rotation(270F)
@@ -464,12 +471,13 @@ class GameActivity : AppCompatActivity() {
             canvas.drawLine((0).toFloat(), (0).toFloat(), (0).toFloat(), (max_height).toFloat(), paint)
 
             paint.color = Color.rgb(250, 231, 181)
-            canvas.drawRect((Xpoint - kletka / 2 + 1).toFloat(), (Ypoint - kletka / 2 + 1).toFloat(), (Xpoint + kletka / 2 - 1).toFloat(), (Ypoint + kletka / 2 - 1).toFloat(), paint)
+            //canvas.drawRect((Xpoint - kletka / 2 + 1).toFloat(), (Ypoint - kletka / 2 + 1).toFloat(), (Xpoint + kletka / 2 - 1).toFloat(), (Ypoint + kletka / 2 - 1).toFloat(), paint)
             canvas.drawRect((Xpoint_old - kletka / 2 + 1).toFloat(), (Ypoint_old - kletka / 2 + 1).toFloat(), (Xpoint_old + kletka / 2 - 1).toFloat(), (Ypoint_old + kletka / 2 - 1).toFloat(), paint)
 
-            if (key_yes == false) paint.color = Color.GREEN
-            else paint.color = Color.CYAN
-            canvas.drawCircle((Xpoint).toFloat(), (Ypoint).toFloat(), (rad).toFloat(), paint)
+            if (key_yes == false)
+                canvas.drawBitmap(playerBitmap, (Xpoint - kletka / 2 + 1).toFloat(), (Ypoint - kletka / 2 + 1).toFloat(), paint)
+            else canvas.drawBitmap(playerBitmap2, (Xpoint - kletka / 2 + 1).toFloat(), (Ypoint - kletka / 2 + 1).toFloat(), paint)
+
 
             paint.color = Color.RED
             for (i in 0 until klet_height * (klet_width - 1)) {
@@ -511,8 +519,7 @@ class GameActivity : AppCompatActivity() {
             //}
 
             if (((key_yes_was == true)||(Dif == "ЛЕГКО"))&&(key_yes == false)) {
-                paint.color = Color.BLUE
-                canvas.drawCircle((Xkey).toFloat(), (Ykey).toFloat(), (rad).toFloat(), paint)
+                canvas.drawBitmap(playerBitmap3, (Xkey - kletka / 2 + 1).toFloat(), (Ykey - kletka / 2 + 1).toFloat(), paint)
             }
 
             //else if (key_yes_was == false) {
@@ -520,7 +527,7 @@ class GameActivity : AppCompatActivity() {
             //    canvas.drawCircle((Xkey).toFloat(), (Ykey).toFloat(), (rad).toFloat(), paint)
             //}
 
-            //canvas.drawBitmap(BitmapFactory.decodeResource(resources,R.drawable.completed), (0).toFloat(), (0).toFloat(), paint)
+            //canvas.drawBitmap(playerBitmap, (Xpoint).toFloat(), (Ypoint).toFloat(), paint)
         }
 
     }
