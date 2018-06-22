@@ -125,6 +125,8 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
+
+
         LeftInMillis = Left_time
         startTimer()
 
@@ -149,6 +151,13 @@ class GameActivity : AppCompatActivity() {
                     (key_yes_was).toString(),
                     (key_yes).toString(),
                     (LeftInMillis).toString()))
+
+            var Mas_sten_str : String =""
+            for (i in 0 until (klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1))) {
+                Mas_sten_str += Mas_sten[i]
+                Mas_sten_str += " "
+            }
+            Mas_sten_str = substring(Mas_sten_str, 0, Mas_sten_str.length - 1)
 
             dataBase.clear_mas()
             dataBase.add_mas(GameMassivActivity(
@@ -217,7 +226,7 @@ class GameActivity : AppCompatActivity() {
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
 
-                if ((Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] == 1)&&(dif != "ХАРД"))
+                if ((Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
                     Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] = 2
 
                 Xpoint = Xpoint_start
@@ -265,7 +274,7 @@ class GameActivity : AppCompatActivity() {
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
 
-                if ((Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] == 1)&&(dif != "ХАРД"))
+                if ((Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
                     Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] = 2
 
                 Xpoint = Xpoint_start
@@ -313,7 +322,7 @@ class GameActivity : AppCompatActivity() {
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
 
-                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] == 1)&&(dif != "ХАРД"))
+                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
                     Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] = 2
 
                 Xpoint = Xpoint_start
@@ -361,7 +370,7 @@ class GameActivity : AppCompatActivity() {
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
 
-                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka - 1] == 1)&&(dif != "ХАРД"))
+                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka - 1] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
                     Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka - 1] = 2
 
                 Xpoint = Xpoint_start
@@ -400,6 +409,13 @@ class GameActivity : AppCompatActivity() {
                 (key_yes_was).toString(),
                 (key_yes).toString(),
                 (LeftInMillis).toString()))
+
+        var Mas_sten_str : String =""
+        for (i in 0 until (klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1))) {
+            Mas_sten_str += Mas_sten[i]
+            Mas_sten_str += " "
+        }
+        Mas_sten_str = substring(Mas_sten_str, 0, Mas_sten_str.length - 1)
 
         dataBase.clear_mas()
         dataBase.add_mas(GameMassivActivity(

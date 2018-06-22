@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         contin.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             intent.putExtra("New_game", ("no").toString())
+            intent.putExtra("Dif", (dif).toString())
             finish()
             startActivity(intent)
         }
