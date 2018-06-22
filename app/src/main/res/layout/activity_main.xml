@@ -15,7 +15,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:background="@color/colorAccent2"
-        android:text="@string/begin" />
+        android:fontFamily="sans-serif"
+        android:text="@string/begin"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/new_game"
@@ -25,7 +27,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:background="@color/colorAccent2"
-        android:text="@string/new_game" />
+        android:fontFamily="sans-serif"
+        android:text="@string/new_game"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/exit"
@@ -37,7 +41,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="220dp"
         android:background="@color/colorAccent2"
-        android:text="@string/exit" />
+        android:fontFamily="sans-serif"
+        android:text="@string/exit"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/stat"
@@ -47,15 +53,21 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
         android:background="@color/colorAccent2"
-        android:text="статистика" />
+        android:fontFamily="sans-serif"
+        android:text="статистика"
+        android:textSize="16sp"/>
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="300dp"
         android:layout_height="48dp"
-        android:layout_marginTop="170dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/contin"
-        android:background="@color/colorAccent2" />
+        android:layout_marginTop="170dp"
+        android:background="@color/colorAccent2"
+        android:dropDownWidth="match_parent"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textSize="16sp"/>
 
 </RelativeLayout>

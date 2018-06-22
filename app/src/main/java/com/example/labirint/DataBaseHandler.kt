@@ -25,6 +25,10 @@ class DBHelper(context: Context)
                 + "Ypoint_start text,"
                 + "Xpoint_old text,"
                 + "Ypoint_old text,"
+                + "Xkey text,"
+                + "Ykey text,"
+                + "key_yes_was,"
+                + "key_yes,"
                 + "Left_time text" + ");"))
 
         Log.d(LOG_TAG, "--- onCreate database ---")
@@ -57,7 +61,6 @@ class DBHelper(context: Context)
 
 
 
-
     fun add(state : GameState) {
         val cv = ContentValues()
         val db = this.writableDatabase
@@ -69,6 +72,10 @@ class DBHelper(context: Context)
         cv.put("Ypoint_start", state.Ypoint_start)
         cv.put("Xpoint_old", state.Xpoint_old)
         cv.put("Ypoint_old", state.Ypoint_old)
+        cv.put("Xkey", state.Xkey)
+        cv.put("Ykey", state.Ykey)
+        cv.put("key_yes_was", state.key_yes_was)
+        cv.put("key_yes", state.key_yes)
         cv.put("Left_time", state.Left_time)
 
         val rowID = db.insert("mytable", null, cv)
@@ -119,7 +126,6 @@ class DBHelper(context: Context)
 
 
 
-
     fun read() : GameState? {
         val db = this.writableDatabase
 
@@ -131,6 +137,10 @@ class DBHelper(context: Context)
                 "Ypoint_start",
                 "Xpoint_old",
                 "Ypoint_old",
+                "Xkey",
+                "Ykey",
+                "key_yes_was",
+                "key_yes",
                 "Left_time"), null, null, null, null, null)  //"id like ?", arrayOf("3")
 
         val state : GameState?
@@ -142,6 +152,10 @@ class DBHelper(context: Context)
                     c.getString(c.getColumnIndex("Ypoint_start")),
                     c.getString(c.getColumnIndex("Xpoint_old")),
                     c.getString(c.getColumnIndex("Ypoint_old")),
+                    c.getString(c.getColumnIndex("Xkey")),
+                    c.getString(c.getColumnIndex("Ykey")),
+                    c.getString(c.getColumnIndex("key_yes_was")),
+                    c.getString(c.getColumnIndex("key_yes")),
                     c.getString(c.getColumnIndex("Left_time")))
         }else {
             state = null
@@ -261,7 +275,6 @@ class DBHelper(context: Context)
 
         db.close()
     }
-
 
 
 
