@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     var Ykey = 0
     var key_yes_was = false
     var key_yes = false
-    lateinit var dif : String
+    var dif : String = ""
     var game_over = "no"
 
     override fun onCreate(savedInstanceState: Bundle?) {
