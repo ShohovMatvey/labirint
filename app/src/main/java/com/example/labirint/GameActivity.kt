@@ -33,6 +33,7 @@ class GameActivity : AppCompatActivity() {
     var Left_time: Long = 0
     var klet_width: Int = 16
     var klet_height: Int = 16
+    var game_over = "no"
 
     val dataBase = DBHelper(this)
     lateinit var background: Canvass
@@ -55,7 +56,7 @@ class GameActivity : AppCompatActivity() {
     var generate_sten = ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1))) / 2
     var key_yes : Boolean = false
     var key_yes_was : Boolean = false
-    var Dif : String =""
+    var Dif : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,9 +79,6 @@ class GameActivity : AppCompatActivity() {
 
         val new_game = intent.getStringExtra("New_game")
         if (new_game != null) New_game = (new_game).toString()
-        val dif = intent.getStringExtra("Dif")
-        if (dif != null) Dif = (dif).toString()
-        println(Dif)
 
         val scores = dataBase.read()
         if (scores != null) {
@@ -95,6 +93,12 @@ class GameActivity : AppCompatActivity() {
             key_yes_was = (scores.key_yes_was).toBoolean()
             key_yes = (scores.key_yes).toBoolean()
             Left_time = (scores.Left_time).toLong()
+        }
+
+        val scores4 = dataBase.read_dif()
+        if (scores4 != null) {
+            Dif = (scores4.dif)
+            game_over = (scores4.game_over)
         }
 
         if (New_game == "yes") {
@@ -126,7 +130,6 @@ class GameActivity : AppCompatActivity() {
         }
 
 
-
         LeftInMillis = Left_time
         startTimer()
 
@@ -152,7 +155,7 @@ class GameActivity : AppCompatActivity() {
                     (key_yes).toString(),
                     (LeftInMillis).toString()))
 
-            var Mas_sten_str : String =""
+            Mas_sten_str = ""
             for (i in 0 until (klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1))) {
                 Mas_sten_str += Mas_sten[i]
                 Mas_sten_str += " "
@@ -164,6 +167,11 @@ class GameActivity : AppCompatActivity() {
                     (Mas_klet_str),
                     (Mas_sten_str),
                     (win_sten).toString()))
+
+            dataBase.clear_dif()
+            dataBase.add_dif(Dif_GameOverActivity(
+                    (Dif),
+                    (game_over)))
 
             intent.putExtra("But_home", ("no").toString())
             finish()
@@ -194,153 +202,137 @@ class GameActivity : AppCompatActivity() {
                 AlertDialog.dismiss()
                 startTimer()
             }
+            game_over = "no"
         }
 
         top.setOnClickListener {
-            if (((Ypoint - kletka / 2) / kletka == 0) && ((Xpoint - kletka / 2) / kletka == win_sten) && (win_sten in (0..klet_width)) && (key_yes == true)) {
-                pauseTimer()
-                for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
-                    if (Mas_sten[i] == 1) Mas_sten[i] = 2
+            if (game_over != "yes") {
+                if (((Ypoint - kletka / 2) / kletka == 0) && ((Xpoint - kletka / 2) / kletka == win_sten) && (win_sten in (0..klet_width)) && (key_yes == true)) {
+                    pauseTimer()
+                    for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
+                        if (Mas_sten[i] == 1) Mas_sten[i] = 2
+                    }
+                    Xpoint = Xpoint_start
+                    Ypoint = Ypoint_start
+                    Xpoint_old = Xpoint_start
+                    Ypoint_old = Ypoint_start
+                    background.invalidate()
+                    game_over = "yes"
+                } else if ((Ypoint < kletka) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 11000) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21004) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
+
+                    if ((Mas_sten[klet_height * (klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] == 1) && (Dif != "ХАРД") && (Dif != "СЛОЖНО"))
+                        Mas_sten[klet_height * (klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] = 2
+
+                    Xpoint = Xpoint_start
+                    Ypoint = Ypoint_start
+                    Xpoint_old = Xpoint
+                    Ypoint_old = Ypoint
+                    key_yes = false
+                } else {
+                    Xpoint_old = Xpoint
+                    Ypoint_old = Ypoint
+                    Ypoint -= kletka
+                    key_was()
+                    key_be()
                 }
-                Xpoint = Xpoint_start
-                Ypoint = Ypoint_start
-                Xpoint_old = Xpoint_start
-                Ypoint_old = Ypoint_start
                 background.invalidate()
-                /*resetTimer()
-                startTimer()
-                Xpoint = ((0..klet_width).random()) * kletka + kletka / 2
-                Ypoint = ((0..klet_height).random()) * kletka + kletka / 2
-                Xpoint_start = Xpoint
-                Ypoint_start = Ypoint
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                gener_all()*/
-            } else if ((Ypoint < kletka) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 11000) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21004) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
-
-                if ((Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
-                    Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka - 1] = 2
-
-                Xpoint = Xpoint_start
-                Ypoint = Ypoint_start
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                key_yes = false
-            } else {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Ypoint -= kletka
-                key_was()
-                key_be()
             }
-            background.invalidate()
         }
 
         down.setOnClickListener {
-            if (((Ypoint - kletka / 2) / kletka == klet_height - 1) && ((Xpoint - kletka / 2) / kletka == win_sten - klet_width) && (win_sten in (klet_width..(2 * klet_width))) && (key_yes == true)) {
-                pauseTimer()
-                for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
-                    if (Mas_sten[i] == 1) Mas_sten[i] = 2
+            if (game_over != "yes") {
+                if (((Ypoint - kletka / 2) / kletka == klet_height - 1) && ((Xpoint - kletka / 2) / kletka == win_sten - klet_width) && (win_sten in (klet_width..(2 * klet_width))) && (key_yes == true)) {
+                    pauseTimer()
+                    for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
+                        if (Mas_sten[i] == 1) Mas_sten[i] = 2
+                    }
+                    Xpoint = Xpoint_start
+                    Ypoint = Ypoint_start
+                    Xpoint_old = Xpoint_start
+                    Ypoint_old = Ypoint_start
+                    game_over = "yes"
+                    background.invalidate()
+                } else if ((Ypoint > max_height - kletka) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10030) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20034) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
+
+                    if ((Mas_sten[klet_height * (klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] == 1) && (Dif != "ХАРД") && (Dif != "СЛОЖНО"))
+                        Mas_sten[klet_height * (klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] = 2
+
+                    Xpoint = Xpoint_start
+                    Ypoint = Ypoint_start
+                    Xpoint_old = Xpoint
+                    Ypoint_old = Ypoint
+                    key_yes = false
+                } else {
+                    Xpoint_old = Xpoint
+                    Ypoint_old = Ypoint
+                    Ypoint += kletka
+                    key_was()
+                    key_be()
                 }
-                Xpoint = Xpoint_start
-                Ypoint = Ypoint_start
-                Xpoint_old = Xpoint_start
-                Ypoint_old = Ypoint_start
-                /*resetTimer()
-                startTimer()
-                Xpoint = ((0..klet_width).random()) * kletka + kletka / 2
-                Ypoint = ((0..klet_height).random()) * kletka + kletka / 2
-                Xpoint_start = Xpoint
-                Ypoint_start = Ypoint
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                gener_all()*/
                 background.invalidate()
-            } else if ((Ypoint > max_height - kletka) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10030) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21030) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20034) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
-
-                if ((Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
-                    Mas_sten[klet_height*(klet_width - 1) + (Xpoint - kletka / 2) / kletka * (klet_width - 1) + (Ypoint - kletka / 2) / kletka] = 2
-
-                Xpoint = Xpoint_start
-                Ypoint = Ypoint_start
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                key_yes = false
-            } else {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Ypoint += kletka
-                key_was()
-                key_be()
             }
-            background.invalidate()
         }
 
         right.setOnClickListener {
-            if (((Xpoint - kletka / 2) / kletka == klet_width - 1) && ((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width - klet_height) && (win_sten in ((2 * klet_width + klet_height)..(2 * (klet_width + klet_height)))) && (key_yes == true)) {
-                pauseTimer()
-                for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
-                    if (Mas_sten[i] == 1) Mas_sten[i] = 2
+            if (game_over != "yes") {
+                if (((Xpoint - kletka / 2) / kletka == klet_width - 1) && ((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width - klet_height) && (win_sten in ((2 * klet_width + klet_height)..(2 * (klet_width + klet_height)))) && (key_yes == true)) {
+                    pauseTimer()
+                    for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
+                        if (Mas_sten[i] == 1) Mas_sten[i] = 2
+                    }
+                    Xpoint = Xpoint_start
+                    Ypoint = Ypoint_start
+                    Xpoint_old = Xpoint_start
+                    Ypoint_old = Ypoint_start
+                    game_over = "yes"
+                    background.invalidate()
+                } else if ((Xpoint > max_width - kletka) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10200) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20204) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234) ||
+                        (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
+
+                    if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] == 1) && (Dif != "ХАРД") && (Dif != "СЛОЖНО"))
+                        Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] = 2
+
+                    Xpoint = Xpoint_start
+                    Ypoint = Ypoint_start
+                    Xpoint_old = Xpoint
+                    Ypoint_old = Ypoint
+                    key_yes = false
+                } else {
+                    Xpoint_old = Xpoint
+                    Ypoint_old = Ypoint
+                    Xpoint += kletka
+                    key_was()
+                    key_be()
                 }
-                Xpoint = Xpoint_start
-                Ypoint = Ypoint_start
-                Xpoint_old = Xpoint_start
-                Ypoint_old = Ypoint_start
-                /*resetTimer()
-                startTimer()
-                Xpoint = ((0..klet_width).random()) * kletka + kletka / 2
-                Ypoint = ((0..klet_height).random()) * kletka + kletka / 2
-                Xpoint_start = Xpoint
-                Ypoint_start = Ypoint
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                gener_all()*/
                 background.invalidate()
-            } else if ((Xpoint > max_width - kletka) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10200) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 21200) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20230) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 20204) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31230) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31204) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 30234) ||
-                    (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
-
-                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
-                    Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka] = 2
-
-                Xpoint = Xpoint_start
-                Ypoint = Ypoint_start
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                key_yes = false
-            } else {
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                Xpoint += kletka
-                key_was()
-                key_be()
             }
-            background.invalidate()
         }
 
         left.setOnClickListener {
+            if (game_over != "yes") {
             if (((Xpoint - kletka / 2) / kletka == 0) && ((Ypoint - kletka / 2) / kletka == win_sten - 2 * klet_width) && (win_sten in (2 * klet_width..(2 * klet_width + klet_height))) && (key_yes == true)) {
                 pauseTimer()
                 for (i in 0 until ((klet_height * (klet_width - 1)) + (klet_width * (klet_height - 1)))) {
@@ -350,15 +342,7 @@ class GameActivity : AppCompatActivity() {
                 Ypoint = Ypoint_start
                 Xpoint_old = Xpoint_start
                 Ypoint_old = Ypoint_start
-                /*resetTimer()
-                startTimer()
-                Xpoint = ((0..klet_width).random()) * kletka + kletka / 2
-                Ypoint = ((0..klet_height).random()) * kletka + kletka / 2
-                Xpoint_start = Xpoint
-                Ypoint_start = Ypoint
-                Xpoint_old = Xpoint
-                Ypoint_old = Ypoint
-                gener_all()*/
+                game_over = "yes"
                 background.invalidate()
             } else if ((Xpoint < kletka) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 10004) ||
@@ -370,7 +354,7 @@ class GameActivity : AppCompatActivity() {
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 31034) ||
                     (Mas_klet[(Ypoint - kletka / 2) / kletka][(Xpoint - kletka / 2) / kletka] == 41234)) {
 
-                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka - 1] == 1)&&(dif != "ХАРД")&&(dif != "СЛОЖНО"))
+                if ((Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka - 1] == 1) && (Dif != "ХАРД") && (Dif != "СЛОЖНО"))
                     Mas_sten[(Ypoint - kletka / 2) / kletka * (klet_width - 1) + (Xpoint - kletka / 2) / kletka - 1] = 2
 
                 Xpoint = Xpoint_start
@@ -386,6 +370,7 @@ class GameActivity : AppCompatActivity() {
                 key_be()
             }
             background.invalidate()
+        }
         }
 
         timer = findViewById(R.id.timer)
@@ -423,6 +408,11 @@ class GameActivity : AppCompatActivity() {
                 (Mas_sten_str),
                 (win_sten).toString()))
 
+        dataBase.clear_dif()
+        dataBase.add_dif(Dif_GameOverActivity(
+                (Dif),
+                (game_over)))
+
         intent.putExtra("But_home", ("yes").toString())
         finish()
         startActivity(intent)
@@ -448,7 +438,6 @@ class GameActivity : AppCompatActivity() {
             val kletka = max_height / klet_height
             val max_width = kletka * klet_width
             val rad = kletka / 3
-
 
 
             paint.color = Color.GRAY
@@ -482,7 +471,7 @@ class GameActivity : AppCompatActivity() {
             else paint.color = Color.CYAN
             canvas.drawCircle((Xpoint).toFloat(), (Ypoint).toFloat(), (rad).toFloat(), paint)
 
-            /*paint.color = Color.RED
+            paint.color = Color.RED
             for (i in 0 until klet_height * (klet_width - 1)) {
                 if (Mas_sten[i] == 1) {
                     canvas.drawLine(((i % (klet_width - 1)) * kletka + kletka).toFloat(), (0 + kletka * (i / (klet_width - 1))).toFloat(), ((i % (klet_width - 1)) * kletka + kletka).toFloat(), (kletka + kletka * (i / (klet_width - 1))).toFloat(), paint)
@@ -492,7 +481,7 @@ class GameActivity : AppCompatActivity() {
                 if (Mas_sten[i] == 1) {
                     canvas.drawLine((0 + kletka * ((i - klet_height * (klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height * (klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), (kletka + kletka * ((i - klet_height * (klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height * (klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), paint)
                 }
-            }*/
+            }
 
             paint.color = Color.BLACK
             for (i in 0 until klet_height * (klet_width - 1)) {
@@ -611,9 +600,6 @@ class GameActivity : AppCompatActivity() {
             Mas_sten_str += " "
         }
         Mas_sten_str = substring(Mas_sten_str, 0, Mas_sten_str.length - 1)
-        //println(Mas_klet_str)
-        //println(Mas_sten_str)
-        //win_sten = (0..((klet_width + klet_height) * 2 - 1)).random()
     }
 
 

@@ -57,6 +57,12 @@ class DBHelper(context: Context)
                 + "Mas_klet_str text,"
                 + "Mas_sten_str text,"
                 + "win_sten text" + ");"))
+
+        Log.d(LOG_TAG, "--- onCreate database ---")
+        db.execSQL(("create table IF NOT EXISTS mytable4 ("
+                + "id integer primary key autoincrement,"
+                + "dif text,"
+                + "game_over text" + ");"))
     }
 
 
@@ -121,6 +127,19 @@ class DBHelper(context: Context)
 
         val rowID3 = db.insert("mytable3", null, cv)
         Log.d(LOG_TAG, "row inserted, ID = " + rowID3)
+        this.close()
+    }
+
+    fun add_dif(state : Dif_GameOverActivity) {
+        val cv = ContentValues()
+        val db = this.writableDatabase
+        Log.d(LOG_TAG, "--- Insert in mytable4: ---")
+
+        cv.put("dif", state.dif)
+        cv.put("game_over", state.dif)
+
+        val rowID4 = db.insert("mytable4", null, cv)
+        Log.d(LOG_TAG, "row inserted, ID = " + rowID4)
         this.close()
     }
 
@@ -243,6 +262,29 @@ class DBHelper(context: Context)
         return state3
     }
 
+    fun read_dif() : Dif_GameOverActivity? {
+        val db = this.writableDatabase
+
+        Log.d(LOG_TAG, "--- Rows in mytable4: ---")
+        val c = db.query("mytable4", arrayOf("id",
+                "dif",
+                "game_over"), null, null, null, null, null)  //"id like ?", arrayOf("3")
+
+        val state4 : Dif_GameOverActivity?
+
+        if (c.moveToNext()) {
+            state4 = Dif_GameOverActivity(c.getString(c.getColumnIndex("dif")),
+                    c.getString(c.getColumnIndex("game_over")))
+        }else {
+            state4 = null
+        }
+
+        c.close()
+        db.close()
+
+        return state4
+    }
+
 
 
 
@@ -276,6 +318,15 @@ class DBHelper(context: Context)
         db.close()
     }
 
+    fun clear_dif(){
+        val db = this.writableDatabase
+
+        Log.d(LOG_TAG, "--- Clear mytable: ---")
+        val clearCount = db.delete("mytable4", null, null)
+        Log.d(LOG_TAG, "deleted rows count = " + clearCount)
+
+        db.close()
+    }
 
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

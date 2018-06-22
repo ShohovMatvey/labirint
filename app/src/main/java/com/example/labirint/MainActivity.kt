@@ -13,16 +13,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.example.labirint.GameActivity.Companion.all_time
 import kotlinx.android.synthetic.main.dialog_main.view.*
 import java.util.*
-import kotlinx.android.synthetic.main.my_cool_spinner_item.view.*
-
 
 class MainActivity : AppCompatActivity() {
 
-    //val kletka = 30
     var klet_width : Int = 16
     var klet_height : Int = 16
-    //var Mas_klet: Array<Array<Int>> = Array(klet_height, { Array(klet_width, { 10000 }) })
-    //var Mas_sten: Array<Int> = Array(((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1))), { 0 })
     var k : Int = 0
     var n : Int = 0
     var Xkey = 0
@@ -30,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     var key_yes_was = false
     var key_yes = false
     lateinit var dif : String
-    //var generate_sten = ((klet_height *(klet_width - 1)) + (klet_width *(klet_height - 1)))/2
+    var game_over = "no"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +74,12 @@ class MainActivity : AppCompatActivity() {
         var Left_time : Long
         var But_home : String = "no"
 
+        val scores4 = dataBase.read_dif()
+        if (scores4 != null) {
+            dif = (scores4.dif)
+            game_over = (scores4.game_over)
+        }
+
         val but_home = intent.getStringExtra("But_home")
         if (but_home != null) But_home = (but_home).toString()
         if (But_home == "yes") {
@@ -88,8 +89,11 @@ class MainActivity : AppCompatActivity() {
 
         contin.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
+            dataBase.clear_dif()
+            dataBase.add_dif(Dif_GameOverActivity(
+                    (dif),
+                    (game_over)))
             intent.putExtra("New_game", ("no").toString())
-            intent.putExtra("Dif", (dif).toString())
             finish()
             startActivity(intent)
         }
@@ -116,8 +120,13 @@ class MainActivity : AppCompatActivity() {
                     (key_yes_was).toString(),
                     (key_yes).toString(),
                     (Left_time).toString()))
+
+            dataBase.clear_dif()
+            dataBase.add_dif(Dif_GameOverActivity(
+                    (dif),
+                    (game_over)))
+
             intent.putExtra("New_game", ("yes").toString())
-            intent.putExtra("Dif", (dif).toString())
             finish()
             startActivity(intent)
         }
