@@ -479,7 +479,7 @@ class GameActivity : AppCompatActivity() {
             else canvas.drawBitmap(playerBitmap2, (Xpoint - kletka / 2 + 1).toFloat(), (Ypoint - kletka / 2 + 1).toFloat(), paint)
 
 
-            paint.color = Color.RED
+            /*paint.color = Color.RED
             for (i in 0 until klet_height * (klet_width - 1)) {
                 if (Mas_sten[i] == 1) {
                     canvas.drawLine(((i % (klet_width - 1)) * kletka + kletka).toFloat(), (0 + kletka * (i / (klet_width - 1))).toFloat(), ((i % (klet_width - 1)) * kletka + kletka).toFloat(), (kletka + kletka * (i / (klet_width - 1))).toFloat(), paint)
@@ -489,7 +489,7 @@ class GameActivity : AppCompatActivity() {
                 if (Mas_sten[i] == 1) {
                     canvas.drawLine((0 + kletka * ((i - klet_height * (klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height * (klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), (kletka + kletka * ((i - klet_height * (klet_width - 1)) / (klet_height - 1))).toFloat(), ((i - klet_height * (klet_width - 1)) % (klet_height - 1) * kletka + kletka).toFloat(), paint)
                 }
-            }
+            }*/
 
             paint.color = Color.BLACK
             for (i in 0 until klet_height * (klet_width - 1)) {

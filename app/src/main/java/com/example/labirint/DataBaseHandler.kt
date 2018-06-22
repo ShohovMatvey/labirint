@@ -136,7 +136,7 @@ class DBHelper(context: Context)
         Log.d(LOG_TAG, "--- Insert in mytable4: ---")
 
         cv.put("dif", state.dif)
-        cv.put("game_over", state.dif)
+        cv.put("game_over", state.game_over)
 
         val rowID4 = db.insert("mytable4", null, cv)
         Log.d(LOG_TAG, "row inserted, ID = " + rowID4)

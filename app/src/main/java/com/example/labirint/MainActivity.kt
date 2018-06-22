@@ -80,6 +80,11 @@ class MainActivity : AppCompatActivity() {
             game_over = (scores4.game_over)
         }
 
+        if (dif == "ЛЕГКО") spinner.setSelection(0)
+        else if (dif == "НОРМАЛЬНО") spinner.setSelection(1)
+        else if (dif == "СЛОЖНО") spinner.setSelection(2)
+        else if (dif == "ХАРД") spinner.setSelection(3)
+
         val but_home = intent.getStringExtra("But_home")
         if (but_home != null) But_home = (but_home).toString()
         if (But_home == "yes") {
@@ -89,11 +94,37 @@ class MainActivity : AppCompatActivity() {
 
         contin.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
-            dataBase.clear_dif()
-            dataBase.add_dif(Dif_GameOverActivity(
-                    (dif),
-                    (game_over)))
-            intent.putExtra("New_game", ("no").toString())
+
+            if (game_over == "yes"){
+                Xpoint = ((0..klet_width).random()) * kletka + kletka / 2
+                Ypoint = ((0..klet_height).random()) * kletka + kletka / 2
+                Xpoint_start = Xpoint
+                Ypoint_start = Ypoint
+                Xpoint_old = Xpoint
+                Ypoint_old = Ypoint
+                Left_time = all_time
+                dataBase.clear()
+                dataBase.add(GameState(
+                        (Xpoint).toString(),
+                        (Ypoint).toString(),
+                        (Xpoint_start).toString(),
+                        (Ypoint_start).toString(),
+                        (Xpoint_old).toString(),
+                        (Ypoint_old).toString(),
+                        (Xkey).toString(),
+                        (Ykey).toString(),
+                        (key_yes_was).toString(),
+                        (key_yes).toString(),
+                        (Left_time).toString()))
+
+                game_over = "no"
+                dataBase.clear_dif()
+                dataBase.add_dif(Dif_GameOverActivity(
+                        (dif),
+                        (game_over)))
+                intent.putExtra("New_game", ("yes").toString())
+            }
+            else intent.putExtra("New_game", ("no").toString())
             finish()
             startActivity(intent)
         }
